@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mark</title>
+  <subtitle>:)</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-08-28T15:20:53.674Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Mark</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JavaScript面向对象</title>
+    <link href="http://yoursite.com/2016/08/28/Object-Oriented/"/>
+    <id>http://yoursite.com/2016/08/28/Object-Oriented/</id>
+    <published>2016-08-28T13:05:52.000Z</published>
+    <updated>2016-08-28T15:20:53.674Z</updated>
+    
+    <content type="html"><![CDATA[<p>JavaScript中的构造函数是创建对象是调用的函数，通常的写法如下：</p>
+<p>定义Person构造函数（默认构造函数首字母大写）</p>
+<pre><code>function Person(name,age)
+{
+    this.name = name;
+    this.age = age;
+
+    this.say = function (){
+        console.log(&apos;My name is &apos; + this.name + &apos;, age is &apos; + this.age);
+    };
+}
+
+var person1 = new Person(&apos;Mark&apos;,18); //当你调用构造函数时，new会自动帮你创建this对象，并返回。
+
+console.log(person1.say());
+</code></pre><p>如上，构造函数定义了name与age属性，say方法。实例化一个名字为person1的对象，并调用say()方法。</p>
+<pre><code>console - &gt; &quot;My name is Mark, age is 18&quot;
+</code></pre><p>构造函数允许你给对象配置相同的属性，但是构造函数并没有消除代码冗余，在上面的例子中，每一个对象都有自己的say()方法，这意味着如果实例化成百上千个对象，就会有相同<br>数量的函数做相同的事情，只是数据不用而已。</p>
+<p>如果所以实例化的对象共享一个方法，那么效率会被大大的提高，这就需要用到原型对象。</p>
+<p>可以把原型对象看作对象的基类，所有创建的对象共享该原型对象。</p>
+<p>改写上述例子</p>
+<pre><code>function Person(name,age)
+{
+    this.name = name;
+    this.age = age;
+}
+
+Person.prototype.say = function (){
+    console.log(&apos;My name is &apos; + this.name + &apos;, age is &apos; + this.age);
+};
+
+//Person.prototype 就是该构造函数的原型对象
+
+var person1 = new Person(&apos;Mark&apos;,18);
+var person2 = new Person(&apos;Jerry&apos;,22);
+
+console.log(person1.say());
+console.log(person2.say());
+
+console - &gt; &quot;My name is Mark, age is 18&quot;
+console - &gt; &quot;My name is Jerry, age is 22&quot;
+</code></pre><p>如上，所有实例化的对象都会共享原型对象上的say()方法。</p>
+<p>一个实例化的对象通过内部属性[[Prototype]]跟踪其原型对象。该属性是一个指向该实例使用的原型对象的指针。当你new创建一个对象时，构造函数的原型对象会被赋<br>给[[prototype]]属性。</p>
+<p>你可以调用Object.getPrototypeOf()方法读取[[prototype]]属性的值。</p>
+<pre><code>Object.getPrototypeOf(person1) === Person.prototype; -&gt; true
+</code></pre><p>同样，你也可以使用isPrototypeOf()检查某个对象是不是另外一个对象的原型对象。</p>
+<pre><code>Person.prototype.isPrototypeOf(person1); -&gt; true
+</code></pre><p>众所周知，Object是一个泛用对象，所有对象都属于Object。</p>
+<p>那么Object.getPrototypeOf() 与 isPrototypeOf() 方法可以理解在 Object.prototype 上具有的方法。</p>
+<p>这里说一下对象的属性，当读取一个对象的属性时，JavaScript引擎首先在对象的自有属性中查找，找到则返回，如果找不到，则会搜索[[Prototype]]中的对象，找不到返回undefined。</p>
+<p>常用in查找对象中是否具有相应的属性，但是in操作符会对原型属性和自有属性都返回true。</p>
+<pre><code>var book = { &apos;title&apos; : &apos;Object-Oriented&apos; };
+
+console.log(&apos;title&apos; in book); -&gt; true
+
+console.log (&apos;isPrototypeOf&apos; in book); -&gt; true
+</code></pre><p>当你只想在对象中寻找自有属性时，应使用hasOwnProperty()。</p>
+<p>你可以用这样一个函数去鉴别一个属性是不是原型属性。</p>
+<pre><code>function isPrototypeProperty (obj,name)
+{
+    return name in obj &amp;&amp; !obj.hasOwnProperty(name);
+}
+</code></pre><p>原型对象的共享机制使得它成为一次性为所有实例对象定义的理想手段，可以在原型对象上存储其他类型的数据，但在存储时需要注意。</p>
+<pre><code>function Person(name)
+{
+    this.name = name;
+}
+
+Person.prototype.list = [];
+
+var person1 = new Person(&apos;Mark&apos;);
+var person2 = new Person(&apos;Jerry&apos;);
+
+person1.list.push(&apos;some&apos;);
+person2.list.push(&apos;any&apos;);
+
+console.log(person1.list); -&gt; [&apos;some&apos;,&apos;any&apos;]
+</code></pre><p>很多开发者会使用另外一种更简洁的方式来扩充原型对象，如下。</p>
+<pre><code>function Person(name)
+{
+    this.name = name;
+}
+Person.prototype = {
+    say : function (){
+        console.log(&apos;My name is&apos; + this.name);
+    },
+    talk : function (){
+        console.log(&apos;Talk to Me&apos;);
+    }
+};
+</code></pre><p>上述定义方法的方式不需要多次键入Person.prototype，但是有一个问题需要注意。</p>
+<pre><code>var person1 = new Person(&apos;Mark&apos;);
+
+console.log(person1.constructor === Person); -&gt; false
+console.log(person1.constructor === Object); -&gt; true
+</code></pre><p>constructor是原型对象才具有的一个属性，且constructor指向其构造函数，上述例子中的constructor应指向Person，但是为什么指向Object了呢？</p>
+<p>是因为使用对象的字面形式改变了构造函数的属性。</p>
+<p>注意：constructor其实没有什么用处，只是JavaScript语言设计的历史遗留物。由于constructor属性是可以变更的，所以未必真的指向对象的构造函数，只是一个提示。不过，从编程习惯上，我们应该尽量让对象的constructor指向其构造函数，以维持这个惯例。</p>
+<p><a href="http://www.zhihu.com/question/19951896/answer/13457869" target="_blank" rel="external">http://www.zhihu.com/question/19951896/answer/13457869</a></p>
+<p>所以在使用对象的字面形式改写原型对象时，应手动改写constructor属性。</p>
+<pre><code>Person.prototype = {
+    constructor : Person,
+
+    say : function (){
+        console.log(&apos;My name is&apos; + this.name);
+    },
+    talk : function (){
+        console.log(&apos;Talk to Me&apos;);
+    }
+};
+</code></pre><p>改天再写继承 :)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;JavaScript中的构造函数是创建对象是调用的函数，通常的写法如下：&lt;/p&gt;
+&lt;p&gt;定义Person构造函数（默认构造函数首字母大写）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Person(name,age)
+{
+    this.name = name;
+  
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
