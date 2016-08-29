@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-28T15:20:53.674Z</updated>
+  <updated>2016-08-29T11:01:47.336Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2016/08/28/Object-Oriented/"/>
     <id>http://yoursite.com/2016/08/28/Object-Oriented/</id>
     <published>2016-08-28T13:05:52.000Z</published>
-    <updated>2016-08-28T15:20:53.674Z</updated>
+    <updated>2016-08-29T11:01:47.336Z</updated>
     
-    <content type="html"><![CDATA[<p>JavaScript中的构造函数是创建对象是调用的函数，通常的写法如下：</p>
+    <content type="html"><![CDATA[<p>JavaScript中的构造函数是创建对象时调用的函数，通常的写法如下：</p>
 <p>定义Person构造函数（默认构造函数首字母大写）</p>
 <pre><code>function Person(name,age)
 {
@@ -137,7 +137,7 @@ console.log(person1.constructor === Object); -&gt; true
     
     <summary type="html">
     
-      &lt;p&gt;JavaScript中的构造函数是创建对象是调用的函数，通常的写法如下：&lt;/p&gt;
+      &lt;p&gt;JavaScript中的构造函数是创建对象时调用的函数，通常的写法如下：&lt;/p&gt;
 &lt;p&gt;定义Person构造函数（默认构造函数首字母大写）&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;function Person(name,age)
 {
