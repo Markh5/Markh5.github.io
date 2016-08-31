@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-08-29T11:01:47.336Z</updated>
+  <updated>2016-08-31T07:15:48.561Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,57 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Angular 三种依赖注入的方式</title>
+    <link href="http://yoursite.com/2016/08/31/DI-angular/"/>
+    <id>http://yoursite.com/2016/08/31/DI-angular/</id>
+    <published>2016-08-31T06:40:05.000Z</published>
+    <updated>2016-08-31T07:15:48.561Z</updated>
+    
+    <content type="html"><![CDATA[<p>Dependency Injectio  </p>
+<p>所谓依赖注入，在我看来，即需要什么就注入到相应的Function中，“饭来张口”，就是典型的依赖注入模式。</p>
+<p>Angular中的依赖注入有三种方式： 推断式注入，内联式注入，标记式注入</p>
+<p>推断式注入：</p>
+<pre><code>angular.module(&apos;app&apos;,[])
+    .controller(&apos;ctr&apos;,function ($scope){
+
+        $scope.some = xx;    //业务逻辑
+    });
+</code></pre><p>推断式注入比较简洁 ，要求参数名称($scope)必须与注入的服务名称相同。但是存在弊端，经过代码压缩后就会报错，代码压缩工具会替换变量名称，会把注入的$scope替换掉。</p>
+<p>内联式注入：</p>
+<pre><code>angular.module(&apos;app&apos;,[])
+    .controller(&apos;ctr&apos;,[&apos;$scope&apos;,function ($scope){
+
+    }])
+</code></pre><p>内联式注入需要传入一个数组，数组的最后一个参数是真正的方法体，需要注意的是，方法体函数参数与数组内的参数顺序一致。使用内联式注入就可以解决代码压缩导致无法运行的问题，参数只要保证顺序一致，经过压缩后也不会出现问题。</p>
+<p>标记式注入：</p>
+<pre><code>var app = angular.module(&apos;app&apos;,[]);
+
+var ctrFn = function ($scope){
+};
+
+ctrFn.$injector = [&apos;$scope&apos;];
+app.controller(&apos;ctr&apos;,ctrFn);
+</code></pre><p>标记式注入与内联式注入一样，要求参数顺序一致，并且也可以解决代码压缩问题。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Dependency Injectio  &lt;/p&gt;
+&lt;p&gt;所谓依赖注入，在我看来，即需要什么就注入到相应的Function中，“饭来张口”，就是典型的依赖注入模式。&lt;/p&gt;
+&lt;p&gt;Angular中的依赖注入有三种方式： 推断式注入，内联式注入，标记式注入&lt;/p&gt;
+&lt;p&gt;推断
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>JavaScript面向对象</title>
     <link href="http://yoursite.com/2016/08/28/Object-Oriented/"/>
     <id>http://yoursite.com/2016/08/28/Object-Oriented/</id>
     <published>2016-08-28T13:05:52.000Z</published>
-    <updated>2016-08-29T11:01:47.336Z</updated>
+    <updated>2016-08-29T13:16:34.677Z</updated>
     
     <content type="html"><![CDATA[<p>JavaScript中的构造函数是创建对象时调用的函数，通常的写法如下：</p>
 <p>定义Person构造函数（默认构造函数首字母大写）</p>

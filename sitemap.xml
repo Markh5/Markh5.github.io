@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/08/31/DI-angular/</loc>
+    
+    <lastmod>2016-08-31T07:15:48.561Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/08/28/Object-Oriented/</loc>
     
-    <lastmod>2016-08-29T11:01:47.336Z</lastmod>
+    <lastmod>2016-08-29T13:16:34.677Z</lastmod>
     
   </url>
   
